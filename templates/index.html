@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image to Ultra HD Video AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    form {
+      background-color: #fff;
+      padding: 20px;
+      margin: auto;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    input[type="file"], textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .note {
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>AI Video Generator</h1>
+  <p class="note">Upload up to 10 images and enter a story prompt (max 2000 characters)</p>
 
+  <form method="POST" action="/" enctype="multipart/form-data">
+    <label><strong>Select Images:</strong></label><br>
+    <input type="file" name="images" multiple accept="image/*" required><br><br>
+
+    <label><strong>Enter Story Prompt:</strong></label><br>
+    <textarea name="prompt" rows="10" maxlength="2000" placeholder="Write your animation story prompt here..." required></textarea><br><br>
+
+    <input type="submit" value="Generate Video">
+  </form>
+</body>
+</html>
