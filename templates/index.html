@@ -1,19 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Image to Video AI</title>
+    <meta charset="UTF-8">
+    <title>AI Video Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00e0ff;
+        }
+
+        input[type="file"],
+        textarea {
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
+            max-width: 600px;
+            background: #222;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 25px;
+            font-size: 16px;
+            background-color: #00e0ff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .loader {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .loader img {
+            width: 80px;
+        }
+
+        .preview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .preview img {
+            width: 100px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #555;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #0f0;
+        }
+    </style>
 </head>
 <body>
-  <h2>Upload Image and Enter Prompt</h2>
-  <form method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" required><br><br>
-    <textarea name="prompt" rows="6" cols="40" placeholder="Enter your story prompt..." required></textarea><br><br>
-    <button type="submit">Generate Video</button>
-  </form>
+    <h1>AI Video Generator</h1>
 
-  {% if result %}
-    <h3>Result:</h3>
-    <p>{{ result }}</p>
-  {% endif %}
+    <form method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
+        <input type="file" name="images" accept="image/*" multiple required onchange="previewImages(event)">
+        <br>
+        <textarea name="prompt" rows="8" maxlength="2000" placeholder="Enter your story or prompt here (max 2000 characters)" required></textarea>
+        <br>
+        <input type="submit" value="Generate Video">
+    </form>
+
+    <div class="loader" id="loader">
+        <p>Processing your video... ⏳</p>
+        <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading...">
+    </div>
+
+    <div class="preview" id="preview"></div>
+
+    {% if result %}
+        <div class="result">{{ result }}</div>
+    {% endif %}
+
+    {% if filenames %}
+        <div style="margin-top: 10px;">
+            {% for file in filenames %}
+                <img src="{{ url_for('static', filename='uploads/' + file) }}" width="120">
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <script>
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+
+        function previewImages(event) {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = "";
+            Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
 </body>
 </html>
